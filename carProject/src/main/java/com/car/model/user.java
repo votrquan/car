@@ -1,15 +1,15 @@
 package com.car.model;
 
 public class user {
-String phoneNumer;
+String phoneNumber;
 String name;
 String age;
 
-public String getPhoneNumer() {
-	return phoneNumer;
+public String getPhoneNumber() {
+	return phoneNumber;
 }
-public void setPhoneNumer(String phoneNumer) {
-	this.phoneNumer = phoneNumer;
+public void setPhoneNumber(String phoneNumber) {
+	this.phoneNumber = phoneNumber;
 }
 public String getName() {
 	return name;

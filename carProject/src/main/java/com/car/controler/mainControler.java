@@ -28,12 +28,18 @@ public class mainControler {
 	@PostMapping("/user/submit")
 	public String save(@Valid user user, BindingResult result, RedirectAttributes redirect) {
 		if (result.hasErrors()) {
-			return "form";
+			return "test";
 		}
 		user rs = new user();
 		rs= user;
 		
-		redirect.addFlashAttribute("success", rs.getPhoneNumer());
-		return "test";
+		redirect.addFlashAttribute("success", rs.getPhoneNumber());
+		return "/admin";
 	}
+	
+	@RequestMapping("/admin")
+	  public String admin(Model model) {
+		model.addAttribute("user", new user()); 
+	    return "admin";
+	  }
 }
