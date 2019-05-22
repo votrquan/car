@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.car.dao.carDAO;
+import com.car.entity.userEntity;
 import com.car.model.user;
 
 @Controller
@@ -32,27 +33,24 @@ public class mainControler {
         return "test2";
     }
 	
-	@PostMapping("/user/submit")
+	@PostMapping("/user/submit") 
 	public String save(@Valid user user, BindingResult result, RedirectAttributes redirect) {
 		if (result.hasErrors()) {
-			return "test";
+			return "form";
 		}
-		user rs = new user();
-		rs= user;
-		
-		List<user> list  =  carDAO.listCarInfo();
-		
-		for (user user2 : list) {
-			System.out.println(user2.getName());
-		}
-		
-		redirect.addFlashAttribute("success", rs.getPhoneNumber());
-		return "/admin";
+		userEntity us = new userEntity();
+		us.setAge(user.getAge());
+		us.setName(user.getName());
+		us.setPhone(user.getPhoneNumber());
+		carDAO.insertUser(us);
+		return "redirect:/";
 	}
+	
 	
 	@RequestMapping("/admin")
 	  public String admin(Model model) {
-		model.addAttribute("user", new user()); 
+		List<user> list  =  carDAO.listCarInfo();
+		model.addAttribute("userList", list); 
 	    return "admin";
 	  }
 }

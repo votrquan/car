@@ -3,6 +3,7 @@ package com.car.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,19 +11,19 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class userEntity {
 	@Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private int id;
+
 	
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", 	length = 30, nullable = true)
     private String name;
 	
-	@Column(name = "phone", nullable = false)
-    private String phone;
+	@Column(name = "phone",	length = 30,  nullable = true)
+    private String phone;	
 	
-	@Column(name = "age", nullable = false)
-    private String age;
-
+	@Column(name = "age",	length = 2,  nullable = true)
+    private String age;
 	public int getId() {
 		return id;
 	}
@@ -30,6 +31,7 @@ public class userEntity {
 	public void setId(int id) {
 		this.id = id;
 	}
+
 
 	public String getName() {
 		return name;

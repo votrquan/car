@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.car.entity.userEntity;
-import com.car.exception.carTransactionException;
 import com.car.model.user;
 
 @Repository
@@ -30,28 +29,20 @@ public class carDAO {
 	 
 	    public List<user> listCarInfo() {
 	        String sql = "Select new " + user.class.getName() //
-	                + "(e.name,e.phone,e.age) " //
-	                + " from " + user.class.getName() + " e ";
+	                + "(e.id as id, e.phone as phoneNumber, e.name as name, e.age as age)" //
+	                + " from " + userEntity.class.getName() + " e ";
 	        Session session = this.sessionFactory.getCurrentSession();
 	        Query<user> query = session.createQuery(sql, user.class);
 	        return query.getResultList();
 	    }
-	 
-	    // MANDATORY: Giao dịch bắt buộc phải được tạo sẵn trước đó.
-	    @Transactional(propagation = Propagation.MANDATORY)
-	    public void addAmount(int id) throws carTransactionException {
-	        userEntity user = this.findById(id);
-	        if (user == null) {
-	            throw new carTransactionException("user not found " + id);
-	        }
-//	        String name = user.getName() + amount;
+	    
+	    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	    public void insertUser(userEntity us)
+	    {
+	    	Session session = this.sessionFactory.getCurrentSession();
+            session.save(us);
+		        // Nếu có lỗi tại DB, ngoại lệ sẽ ném ra ngay lập tức
+//	        session.flush();
 	    }
-	 
-	    // Không được bắt BankTransactionException trong phương thức này.
-	    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = carTransactionException.class)
-	    public void sendMoney(Long fromAccountId, Long toAccountId, double amount) throws carTransactionException {
-	 
-//	        addAmount(toAccountId, amount);
-//	        addAmount(fromAccountId, -amount);
-	    }
+	    	 
 }
